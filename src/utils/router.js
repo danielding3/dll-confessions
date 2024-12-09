@@ -1,3 +1,8 @@
+const routes = {
+  '/': () => import(/* @vite-ignore */'../pages/home/home.js'), //dynamic imports are async, so we need to await them
+  '/app': () => import(/* @vite-ignore */'../pages/app/app.js'),
+};
+
 export const router = {
   init: () => {
     window.addEventListener('popstate', () => router.navigate(window.location.pathname));
@@ -17,12 +22,16 @@ export const router = {
   navigate: async path => {
     console.log('navigate', path)
     history.pushState({}, '', path);
-    const routes = {
-      '/': () => import('../pages/home/home.js'), //dynamic imports are async, so we need to await them
-      '/app': () => import('../pages/app/app.js'),
-    };
-    const page = routes[path] || routes['/']; // getting current page import
-    const module = await page(); // waits for module to be imported
-    module.default(); // calls the default export of the module
+
+    try {
+      const page = routes[path] || routes['/']; // getting current page import
+      const module = await page(); // waits for module to be imported
+      module.default(); // calls the default export of the module
+    } catch (error) {
+      console.error('Navigation error: ', error);
+      if (path !== '/') {
+        router.navigate('/');
+      }
+    } 
   },
 };

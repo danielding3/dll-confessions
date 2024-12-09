@@ -1,4 +1,4 @@
-import './style.css'
-import { router } from './utils/router.js'
+import '/src/style.css'
+import { router } from '/src/utils/router.js'
 
 router.init();
