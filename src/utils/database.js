@@ -1,7 +1,9 @@
 // Create a single supabase client for interacting with your database
 import { createClient } from '@supabase/supabase-js'
 
-const supabasePublicClient = createClient('https://ipkmrzmkpptefejihfuv.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlwa21yem1rcHB0ZWZlamloZnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyMTA0NDAsImV4cCI6MjA0Nzc4NjQ0MH0.rudtYng7igTEVkC1lyV0ebzt66WiU7sEa3Jmun2crXQ', {
+const supabasePublicClient = createClient(
+  import.meta.env.VITE_SUPABASE_URL, 
+  import.meta.env.VITE_SUPABASE_ANON_KEY, {
   db : {
     schema : "public"
   }
@@ -13,27 +15,39 @@ console.log("loaded database.js")
 
 // supabase select / insert functions
 export async function getData() {
-  const { data, error } = await supabasePublicClient
-    .from('confessions-table')
-    .select('*')
-  if (error) {
+  try {
+    const { data, error } = await supabasePublicClient
+      .from('confessions-table')
+      .select('*')
+      if (error) {
+        console.log(error);
+      } else {
+        return data;
+      }
+  } catch (error) {
     console.log(error);
-  } else {
-    return data;
+    throw error;
   }
 }
 
 export async function insertData( msg) { 
-  const { data, error } = await supabasePublicClient
-  .from('confessions-table')
-  .insert({'confession': msg })
-  .select()
-
-  if (error) {
-    console.log(error);
-  } else {
+  try {
+    const { data, error } = await supabasePublicClient
+    .from('confessions-table')
+    .insert({'confession': msg.trim() })
+    .select()
+    
+    if (error) {
+      console.error("Error inserting data: ", error);
+      throw new Error("Failed to save confession");
+    }
+    
     console.log(data, ": new message added");
     getMessageData();
+    return data;
+  } catch (error) {
+    console.error("Error inserting data: ", error);
+    throw new Error("Failed to insert confession");
   }
 }
 
