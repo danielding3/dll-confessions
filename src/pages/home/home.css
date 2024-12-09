@@ -1,0 +1,30 @@
+#welcome-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.welcome-text {
+  text-align: center;
+  margin: 0 auto;
+  max-width: 800px;
+
+  white-space: normal;
+  /* word-break: break-word; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.word-wrapper {
+  display: inline-block;
+  white-space: nowrap;
+  margin: 0 0.1125em;
+}
+.welcome-text .word {
+  display: inline-block;
+}
+
+.welcome-text .letter {
+  display: inline-block;
+}
