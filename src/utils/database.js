@@ -6,6 +6,7 @@ const supabasePublicClient = createClient('https://ipkmrzmkpptefejihfuv.supabase
     schema : "public"
   }
 });
+let messageForm = document.getElementById('messageForm');
 
 
 console.log("loaded database.js")

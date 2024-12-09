@@ -42,19 +42,22 @@ const messages = [];
 
 
 
-const permissionBoxAnimation = anime({
-  targets: '#permission-box',
-  translateY: ['0px', '-10px'],
-  scale: [1, 1.02],
-  boxShadow: [
+const permissionBoxAnimation = () => {
+  console.log('playing permission box box animation')
+  return anime({
+    targets: '#permission-box',
+    translateY: ['0px', '-5px'],
+    scale: [1, 1.01],
+    boxShadow: [
     '0 8px 32px rgba(0,0,0,0.2)',
-    '0 16px 48px rgba(0,0,0,0.3)'
+    '0 16px 48px rgba(0,0,0,0.4)'
   ],
   duration: 2000,
   direction: 'alternate',
   loop: true,
-  easing: 'easeInOutQuad'
-});
+    easing: 'easeInOutQuad'
+  });
+}
 
 // async function loadInitialMessages() {
 //   try {
@@ -121,8 +124,8 @@ function updateMessageCount() {
 export default function App() {
   document.querySelector('#app').innerHTML = `
     <div id="permission-overlay" class="fixed inset-0 z-50 backdrop-blur-md flex items-center justify-center transition-opacity duration-1000">
-      <div id="permission-box" class="bg-white p-8 rounded-lg border-4 border-neutral-900 shadow-[0_8px_32px_rgba(0,0,0,0.2)] max-w-md text-center relative">
-        <div class="inner-shadow absolute inset-0 rounded-lg pointer-events-none"></div>
+      <div id="permission-box" class="bg-white p-8 rounded-lg border-2 border-neutral-900 shadow-[0_8px_32px_rgba(0,0,0,0.2)] max-w-md text-center relative">
+        <div class="camera-request inner-shadow absolute inset-0 rounded-lg pointer-events-none"></div>
         <p class="text-lg">This experience requires the use of your camera. Nothing will be recorded.</p>
         <p class="text-lg">Please accept permissions on your device to continue</p>
       </div>
@@ -163,8 +166,7 @@ export default function App() {
   `;
   initializeApp();
   checkCameraPermission();
-  permissionBoxAnimation.play();
-  // loadInitialMessages();
+  permissionBoxAnimation().play();
 
   const textInput = document.getElementById('textInput');
   textInput.addEventListener('input', (e) => {
@@ -203,17 +205,18 @@ export default function App() {
 
 // Helper functions
 async function checkCameraPermission() {
+  console.log('checking camera permission...')
   try {
     const result = await navigator.mediaDevices.getUserMedia({ video: true });
     // Permission granted
     result.getTracks().forEach(track => track.stop()); // Cleans up camera when not in us
-    
+    console.log('result: ', result)
     // Fade out permission overlay
-    permissionBoxAnimation.pause();  // Add this line
+    console.log('permissions accepted, fading out permission overlay')
+    permissionBoxAnimation().pause();  // Pauses pulsation animation
     const overlay = document.getElementById('permission-overlay');
     overlay.classList.add('opacity-0');
     setTimeout(() => overlay.remove(), 1000);
-  
     
   } catch (err) {
     // Permission denied or error
@@ -222,9 +225,10 @@ async function checkCameraPermission() {
     
     // Update message if explicitly denied
     if (err.name === 'NotAllowedError') {
+      console.log('permission denied, updating permission box')
       const box = document.getElementById('permission-box');
       box.innerHTML = `
-        <div class="inner-shadow absolute inset-0 rounded-lg pointer-events-none"></div>
+        <div class="camera-request inner-shadow absolute inset-0 rounded-lg pointer-events-none"></div>
         <p class="text-lg">This experience requires the use of your camera.</p>
         <p class="text-lg">Please enable camera permissions and refresh the page to continue.</p>
       `;
