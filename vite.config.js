@@ -14,10 +14,10 @@ export default defineConfig({
         }
       }
     },
-    minify: 'terser',
-    sourcemap: false,
-    // Add cache busting
-    chunkFileNames: 'assets/[name]-[hash].js',
-    assetFileNames: 'assets/[name]-[hash][extname]'
+    // minify: 'terser',
+    // sourcemap: false,
+    // // Add cache busting
+    // chunkFileNames: 'assets/[name]-[hash].js',
+    // assetFileNames: 'assets/[name]-[hash][extname]'
   }
 });
