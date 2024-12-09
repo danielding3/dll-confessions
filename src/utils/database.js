@@ -10,7 +10,8 @@ const supabasePublicClient = createClient(
 });
 let messageForm = document.getElementById('messageForm');
 
-
+console.log(import.meta.env.VITE_SUPABASE_URL)
+console.log(import.meta.env.VITE_SUPABASE_ANON_KEY)
 console.log("loaded database.js")
 
 // supabase select / insert functions
@@ -41,7 +42,7 @@ export async function insertData( msg) {
       console.error("Error inserting data: ", error);
       throw new Error("Failed to save confession");
     }
-    
+
     console.log(data, ": new message added");
     getMessageData();
     return data;

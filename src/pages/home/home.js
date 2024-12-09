@@ -1,11 +1,9 @@
 import './home.css'
 import anime from 'animejs/lib/anime.es.js';
-import Letterize from "letterizejs"
 import { Lettering } from '../../lib/lettering.js';
 
 
 export default function Home() {
-  // console.log('running home from ', window.location.pathname)
 
   document.querySelector('#app').innerHTML = `
     <div id="welcome-container" class="text-4xl text-center"> 
@@ -19,22 +17,12 @@ export default function Home() {
     </div>
   `;
 
-  // const welcomeText = new Letterize({
-  //   targets: document.querySelectorAll(".welcome-text"), 
-  //   className: 'letter',
-  //   wrapper: "word",
-  // });
-
   const lettering = new Lettering({ className: 'char', wordClass: 'poop'});
 
   // Apply to all welcome texts
   document.querySelectorAll('.welcome-text').forEach(element => {
     lettering.letters(element);
   });
-
-  
-
-
 
   anime.timeline({}).add({
     targets: "#welcome-container h1:nth-child(1) .char",
