@@ -1,6 +1,6 @@
 const routes = {
-  '/': () => import(/* @vite-ignore */'../pages/home/home.js'), //dynamic imports are async, so we need to await them
-  '/app': () => import(/* @vite-ignore */'../pages/app/app.js'),
+  '/': () => import('/src/pages/home/home.js'), //dynamic imports are async, so we need to await them
+  '/app': () => import('/src/pages/app/app.js'),
 };
 
 export const router = {
