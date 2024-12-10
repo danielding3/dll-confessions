@@ -3,7 +3,8 @@ Colophon
 ML5JS FaceMesh for face detection.
 Music: Hiroshi Yoshimura "Wet Land" from his Wet Land (1993) album.
  */
-
+import songPath from '../../assets/01-Wet-Land-Min.mp3';
+import fontRegular from '../../assets/PPMondwest-Regular.otf';
 // Facemesh indexes for midpoint top and bottom eyelids of each eye, see:
 // https://raw.githubusercontent.com/tensorflow/tfjs-models/refs/heads/master/face-landmarks-detection/mesh_map.jpg
 console.log('sketch loaded');
@@ -42,7 +43,12 @@ export const sketch = function(p) {
   let myFont;
   p.preload = function () {
     // Load the faceMesh model
-    song = p.loadSound('/src/assets/01-Wet-Land-Min.mp3');
+    song = p.loadSound(songPath, () => {
+      console.log('song loaded');
+    }, (error) => {
+      
+      console.error('error loading song', error)
+    });
     faceMesh = ml5.faceMesh(options, () => {
       isModelReady = true;
       console.log('model ready');
@@ -51,7 +57,7 @@ export const sketch = function(p) {
   }
   p.setup = function () {
     console.log('setup')
-    myFont = p.loadFont('/src/assets/PPMondwest-Regular.otf');
+    myFont = p.loadFont(fontRegular);
   
     let canvas = p.createCanvas(cnvWidth, cnvHeight);
     canvas.parent('sketch-container');
