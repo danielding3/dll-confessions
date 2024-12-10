@@ -2,10 +2,21 @@ import './app.css'
 import { sketch } from './sketch.js'
 import { insertData, getData } from '../../utils/database.js'
 import anime from 'animejs/lib/anime.es.js';
+import { setViewportHeight } from '../../utils/viewport.js';
 const messages = [];
+const isMobile = window.innerWidth < 768;
+
+// Function to set the width of the infoModal based on device type
+function setInfoModalWidth() {
+  const infoModal = document.getElementById('infoModal');
+  if (infoModal) {
+    infoModal.style.width = isMobile ? '100%' : '31.25%'; // Adjust width for mobile
+  }
+}
+
+setInfoModalWidth();
 
 const permissionBoxAnimation = () => {
-  console.log('playing permission box box animation')
   return anime({
     targets: '#permission-box',
     translateY: ['0px', '-5px'],
@@ -68,12 +79,21 @@ function updateMessageCount() {
 }
 
 export default function App() {
+  setViewportHeight();
   document.querySelector('#app').innerHTML = `
     <div id="permission-overlay" class="fixed inset-0 z-50 backdrop-blur-md flex items-center justify-center transition-opacity duration-1000">
       <div id="permission-box" class="bg-white p-8 rounded-lg border-2 border-neutral-900 shadow-[0_8px_32px_rgba(0,0,0,0.2)] max-w-md text-center relative">
         <div class="camera-request inner-shadow absolute inset-0 rounded-lg pointer-events-none"></div>
         <p class="text-lg">This experience requires the use of your camera. Nothing will be recorded.</p>
         <p class="text-lg">Please accept permissions on your device to continue</p>
+      </div>
+    </div>
+    <div id="sound-loading-progress" class="fixed pointer-events-none inset-0 z-40 backdrop-blur-md flex items-center justify-center transition-opacity duration-1000">
+      <div class="w-64 relative">
+        <div class="w-full h-8 bg-white border border-black"></div>
+        <div id="progress-bar" class="absolute top-0 left-0 h-8 bg-black duration-200 transition-all" style="width: 0%"></div>
+        <div id="progress-text" class="absolute inset-0 flex items-center justify-center text-center text-sm font-light">0%</div>
+
       </div>
     </div>
     <div id="blackout" class="opacity-0 w-full h-full absolute top-0 left-0 transition-opacity duration-1000 bg-black opacity-0 pointer-events-none"></div>
@@ -100,11 +120,11 @@ export default function App() {
     <div id="messages-container"></div>
     <button id="infoBtn" class="absolute z-10 top-8 right-8 text-center hover:blur-sm">Info</button>
     <div id="infoModal" class="infoModalContent fixed translate-x-full top-0 right-0 opacity-0 text-left text-neutral-950 h-full w-[31.25%] border-l-1 border-gray-400 bg-white transition-all duration-1000">
-      <div class="py-8 pl-8 pr-32">
+      <div class="py-8 pl-8 md:pr-32 pr-16">
         <p class="mb-4">We carry guilt and shame in our hearts, and it can be hard to find a safe space to express our feelings. This is a place to let it out.</p>
         <p class="mb-4">Your confession will be anonymous, and there is no information retained except for your confession.</p>
         <p class="mb-4">This project was built as a collaboration between <a href="https://danielding.world" target="_blank" class="underline pointer text-neutral-950">Daniel Ding</a> and &nbsp<a href="https://sfpc.study" target="_blank" class="underline pointer text-neutral-950">The School for Poetic Computation</a> in NYC.</p>
-        <a href="/" data-link='/' class="absolute bottom-10 left-0 right-0 text-center">Leave the booth</a>
+        <a href="/" data-link='/' class="absolute md:bottom-10 bottom-5 left-0 right-0 text-center">Leave the booth</a>
         <p class="mb-4 message-count">There are currently ${messages.length} confessions.</p>
       </div>
     </div>
@@ -113,6 +133,7 @@ export default function App() {
   initializeApp();
   checkCameraPermission();
   permissionBoxAnimation().play();
+  setInfoModalWidth();
 
   const textInput = document.getElementById('textInput');
   textInput.addEventListener('input', (e) => {
@@ -160,6 +181,8 @@ async function checkCameraPermission() {
     // Fade out permission overlay
     console.log('permissions accepted, fading out permission overlay')
     permissionBoxAnimation().pause();  // Pauses pulsation animation
+    // restart animations (removes existing ones)
+    animateConfessions();
     const overlay = document.getElementById('permission-overlay');
     overlay.classList.add('opacity-0');
     setTimeout(() => overlay.remove(), 1000);
@@ -197,7 +220,7 @@ function animateConfessions() {
   const container = document.getElementById('messages-container');
   container
   const appContainer = document.getElementById('app-container');
-  const MAX_ACTIVE_CONFESSIONS = 10; // Maximum concurrent confessions
+  const MAX_ACTIVE_CONFESSIONS = isMobile ? 5 : 10; // Maximum concurrent confessions
 
   // Message pool manager to handle confession rotation
   let messagePool = {

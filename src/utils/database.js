@@ -1,8 +1,6 @@
 // Create a single supabase client for interacting with your database
 import { createClient } from '@supabase/supabase-js'
 
-console.log(import.meta.env.VITE_SUPABASE_URL)
-console.log(import.meta.env.VITE_SUPABASE_ANON_KEY)
 
 const supabasePublicClient = createClient(
   import.meta.env.VITE_SUPABASE_URL, 

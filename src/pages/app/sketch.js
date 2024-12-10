@@ -5,6 +5,7 @@ Music: Hiroshi Yoshimura "Wet Land" from his Wet Land (1993) album.
  */
 import songPath from '../../assets/01-Wet-Land-Min.mp3';
 import fontRegular from '../../assets/PPMondwest-Regular.otf';
+
 // Facemesh indexes for midpoint top and bottom eyelids of each eye, see:
 // https://raw.githubusercontent.com/tensorflow/tfjs-models/refs/heads/master/face-landmarks-detection/mesh_map.jpg
 console.log('sketch loaded');
@@ -45,9 +46,20 @@ export const sketch = function(p) {
     // Load the faceMesh model
     song = p.loadSound(songPath, () => {
       console.log('song loaded');
+      const progressContainer = document.getElementById("sound-loading-progress");
+      if (progressContainer) {
+        progressContainer.classList.add('hide');
+      }
     }, (error) => {
-      
       console.error('error loading song', error)
+    }, (progress) => { // Loading progress
+      const percentage = Math.ceil(progress * 100)
+      const progressBar = document.getElementById('progress-bar');
+      const progressText = document.getElementById('progress-text');
+      if (progressBar && progressText) {
+        progressBar.style.width = `${percentage}%`;
+        progressText.textContent = `${percentage}%`
+      }
     });
     faceMesh = ml5.faceMesh(options, () => {
       isModelReady = true;

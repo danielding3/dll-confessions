@@ -1,10 +1,10 @@
 import './home.css'
 import anime from 'animejs/lib/anime.es.js';
 import { Lettering } from '../../lib/lettering.js';
-
+import { setViewportHeight } from '../../utils/viewport.js';
 
 export default function Home() {
-
+  setViewportHeight();
   document.querySelector('#app').innerHTML = `
     <div id="welcome-container" class="text-4xl text-center"> 
       <h1 class="welcome-text absolute top-45 left-0 right-0 text-center">Welcome to your confession booth.</h1>
