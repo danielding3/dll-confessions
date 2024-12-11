@@ -36,8 +36,8 @@ export default function Confessions() {
   document.querySelector('#app').innerHTML = `
     <div class="w-full h-full flex items-center justify-center">
       <div class="w-full h-full bg-white"></div>
+      <div id="next-button-container" class="fixed h-4  w-full flex items-center justify-center"></div>
     </div>
-    <div id="next-button-container" class="absolute flex items-center justify-center"></div>
     <div id="messages-container"></div>
   `
   initializeConfessions();
