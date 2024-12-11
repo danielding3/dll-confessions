@@ -1,0 +1,9 @@
+body {
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.button {
+  position: fixed;
+}

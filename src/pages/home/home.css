@@ -28,3 +28,21 @@
 .welcome-text .letter {
   display: inline-block;
 }
+#prompt {
+  position: absolute;
+  bottom: 5svh;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+/* #prompt {
+  opacity: 1;
+  font-size: 1rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.2; }
+  100% { opacity: 1; }
+} */

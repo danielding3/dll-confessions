@@ -60,6 +60,7 @@ export const sketch = function(p) {
         progressBar.style.width = `${percentage}%`;
         progressText.textContent = `${percentage}%`
       }
+      console.log('sound loading progress: ', percentage)
     });
     faceMesh = ml5.faceMesh(options, () => {
       isModelReady = true;

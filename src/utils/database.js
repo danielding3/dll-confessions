@@ -44,7 +44,6 @@ export async function insertData( msg) {
     }
 
     console.log(data, ": new message added");
-    getMessageData();
     return data;
   } catch (error) {
     console.error("Error inserting data: ", error);
@@ -52,21 +51,21 @@ export async function insertData( msg) {
   }
 }
 
-  // RENDERING MESSAGES
-  export async function getMessageData() {
-    const msgs = document.getElementById('msgs');
-    msgs.empty() //remove all children elements
-    let messages = await getData();
-    for (let {message} of messages) {
-      let messageTemplate = `
-        <div style="position:absolute;left:${Math.random()*screen.width}px;top:${Math.random()*screen.height}px">
-          <div>${message}</div>
-        </div>
-      `
-      console.log('msg: ', messageTemplate);
-      msgs.append(messageTemplate);
-    }
-  }
+  // // RENDERING MESSAGES
+  // export async function getMessageData() {
+  //   const msgs = document.getElementById('msgs');
+  //   msgs.empty() //remove all children elements
+  //   let messages = await getData();
+  //   for (let {message} of messages) {
+  //     let messageTemplate = `
+  //       <div style="position:absolute;left:${Math.random()*screen.width}px;top:${Math.random()*screen.height}px">
+  //         <div>${message}</div>
+  //       </div>
+  //     `
+  //     console.log('msg: ', messageTemplate);
+  //     msgs.append(messageTemplate);
+  //   }
+  // }
 
 // SUBMISSION
 // messageForm.bind("submit", (e) => {

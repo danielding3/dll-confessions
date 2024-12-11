@@ -1,7 +1,9 @@
 const routes = {
-  '/': () => import('/src/pages/home/home.js'), //dynamic imports are async, so we need to await them
+  '/': () => import('/src/pages/home/home.js'), 
   '/app': () => import('/src/pages/app/app.js'),
+  '/confessions': () => import('/src/pages/confessions/confessions.js'),
 };
+
 
 export const router = {
   init: () => {
