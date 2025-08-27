@@ -2,6 +2,8 @@ const routes = {
   '/': () => import('/src/pages/home/home.js'), 
   '/app': () => import('/src/pages/app/app.js'),
   '/confessions': () => import('/src/pages/confessions/confessions.js'),
+  '/submission': () => import('/src/pages/submission/submission.js'),
+
 };
 
 
@@ -21,9 +23,15 @@ export const router = {
     router.navigate(window.location.pathname);
   },
 
-  navigate: async path => {
+    /**
+   * Navigate to a given path with optional state.
+   * @param {string} path - The route path.
+   * @param {object} state - The state object to pass. [ OPTIONAL, default: null ]
+   */
+
+  navigate: async (path, state = null) => {
     console.log('navigate', path)
-    history.pushState({}, '', path);
+    history.pushState(state, '', path); // state object to be passed to the page en-route
 
     try {
       const page = routes[path] || routes['/']; // getting current page import
@@ -31,6 +39,7 @@ export const router = {
       module.default(); // calls the default export of the module
     } catch (error) {
       console.error('Navigation error: ', error);
+      console.error('Navigating back to home page');
       if (path !== '/') {
         router.navigate('/');
       }

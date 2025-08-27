@@ -3,6 +3,8 @@ import { sketch } from './sketch.js'
 import { getData, insertData } from '../../utils/database.js'
 import anime from 'animejs/lib/anime.es.js';
 import { setViewportHeight } from '../../utils/viewport.js';
+import { router } from '../../utils/router.js'
+
 const isMobile = window.innerWidth < 768;
 const messages = [];
 // Function to set the width of the infoModal based on device type
@@ -82,7 +84,7 @@ export default function App() {
       <div id="p5_loading" class="loading"></div>
     </div>
     <div id="messages-container"></div>
-    <button id="infoBtn" class="absolute z-10 top-8 right-8 text-center hover:blur-sm">Info</button>
+    <button id="infoBtn" class="absolute z-10 top-2 right-2 md:top-8 md:right-8 text-center hover:blur-sm">Info</button>
     <div id="infoModal" class="infoModalContent fixed translate-x-full top-0 right-0 opacity-0 text-left text-neutral-950 h-full w-[31.25%] border-l-1 border-gray-400 bg-white transition-all duration-1000">
       <div class="py-8 pl-8 md:pr-32 pr-16">
         <p class="mb-4">We carry guilt and shame in our hearts, and it can be hard to find a safe space to express our feelings. This is a place to let it out.</p>
@@ -118,7 +120,22 @@ export default function App() {
     if (message.length > 0) {
       console.log('message is valid, submitting...')
       insertData( message )
+      sessionStorage.setItem('confession', message)
       messageForm.reset(); // resets form inputs
+      
+      // Fade to black before routing
+      const blackout = document.getElementById('blackout');
+      blackout.style.pointerEvents = 'all';
+      anime({
+        targets: blackout,
+        opacity: 1,
+        duration: 1500,
+        easing: 'easeInOutQuad',
+        complete: () => {
+          router.navigate('/submission', { message });
+        }
+      });
+
     } else {
       console.log('message is invalid, not submitting...')
     }

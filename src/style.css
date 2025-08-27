@@ -21,6 +21,8 @@
   font-size: 1.125em;
   line-height: 1.5;
   font-weight: 400;
+  --accent-color-500: #646cff;
+  --accent-color-700:#2e34ac;
 
   color-scheme: light dark;
   color: black;
@@ -33,17 +35,17 @@
 }
 
 ::selection {
-  background-color: #646cff;
+  background-color: var(--accent-color-500);
   color: white;
 }
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--accent-color-500);
   text-decoration: inherit;
 }
 a:hover {
-  color: #2e34ac;
+  color: var(--accent-color-700)
 }
 
 body {

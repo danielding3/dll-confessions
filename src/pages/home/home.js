@@ -20,7 +20,7 @@ export default function Home() {
       <h1 class="welcome-text absolute top-45 left-0 right-0 text-center">Let's begin...</h1>
       <a id="btn" href="/confessions" data-link='/confessions' class="absolute hidden opacity-0 bottom-10 left-0 right-0 text-center">Continue</a>
     </div>
-    <div id="prompt" class="opacity-0">
+    <div id="prompt" class="opacity-0 pointer-events-none">
       ${isMobile ? '<span class="font-bold">tap</span> to continue' : 'press <span class="font-bold">enter </span>'}
       <img src="${enterKeySvg}" alt="enter" class="w-4 h-4 inline-block">
     </div>
@@ -44,6 +44,9 @@ export default function Home() {
       return;
     }
     const timeline = anime.timeline({});
+
+    const prompt = document.getElementById('prompt');
+    prompt.classList.add("scale-105")
 
     // Fade out enter / touch prompt
     anime({
@@ -119,86 +122,24 @@ export default function Home() {
     if (event.key === 'Enter') {
       handleTransition();
     }
-    
   })
 
+  document.addEventListener('keyup', (event) => {
+    if (event.key === 'Enter') {
+      document.getElementById('prompt').classList.remove('scale-105');
+    }
+  })
+  //4. Handle touch input
   document.addEventListener("touchstart", (event) => {
     if (isMobile) {
       event.preventDefault(); // prevents scrolling or zooming behaviour
       handleTransition();
     }
   });
-
-
-  //4. Iterate through the rest of the welcome texts.
-
-  // anime.timeline({}).add({
-  //   targets: "#welcome-container h1:nth-child(1) .char",
-  //   // translateX: [30, 0],
-  //   translateZ: 0,
-  //   opacity: [0,1],
-  //   easing: "easeOutExpo",
-  //   duration: 1500,
-  //   delay: (el, i)=>500 + 30 * i
-  // }).add({
-  //   targets: "#welcome-container h1:nth-child(1) .char",
-  //   opacity: [1, 0],
-  //   easing: "easeInExpo",
-  //   duration: 1000,
-  //   delay: (el, i)=>100 + 20 * i
-  // }) .add({
-  //   targets: "#welcome-container h1:nth-child(2) .char",
-  //   opacity: [0, 1],
-  //   easing: "easeOutExpo",
-  //   duration: 1000,
-  //   delay: (el, i)=>500 + 30 * i
-  // }).add({
-  //   targets: "#welcome-container h1:nth-child(2) .char",
-  //   opacity: [1, 0],
-  //   easing: "easeInExpo",
-  //   duration: 1000,
-  //   delay: (el, i)=>100 + 20 * i
-  // }).add({
-  //   targets: "#welcome-container h1:nth-child(3) .char",
-  //   opacity: [0, 1],
-  //   easing: "easeOutExpo",
-  //   duration: 1000,
-  //   delay: (el, i)=>500 + 30 * i
-  // }).add({
-  //   targets: "#welcome-container h1:nth-child(3) .char",
-  //   opacity: [1, 0],
-  //   easing: "easeInExpo",
-  //   duration: 1000,
-  //   delay: (el, i)=>100 + 20 * i
-  // }).add({
-  //   targets: "#welcome-container h1:nth-child(4) .char",
-  //   opacity: [0, 1],
-  //   easing: "easeOutExpo",
-  //   duration: 1000,
-  //   delay: (el, i)=>100 + 30 * i
-  // }).add({
-  //   targets: "#welcome-container h1:nth-child(4) .char",
-  //   opacity: [1, 0],
-  //   easing: "easeInExpo",
-  //   duration: 1000,
-  //   delay: (el, i)=>100 + 20 * i
-  // }).add({
-  //   targets: "#welcome-container h1:nth-child(5) .char",
-  //   opacity: [0, 1],
-  //   easing: "easeOutExpo",
-  //   duration: 1000,
-  //   delay: (el, i)=>100 + 30 * i
-  // }).add({
-  //   targets: "#welcome-container h1:nth-child(5) .char",
-  //   opacity: [1, 0],
-  //   easing: "easeInExpo",
-  //   duration: 1000,
-  //   delay: (el, i)=>100 + 20 * i
-  // }).add({
-  //   targets: "#welcome-container h1:nth-child(6), #btn",
-  //   opacity: [0, 1],
-  //   easing: "easeOutExpo",
-  //   duration: 1000,
-  //   delay: (el, i)=>100 + 30 * i
-  // })
+  document.addEventListener("touchend", (event) => {
+    if (isMobile) {
+      event.preventDefault();
+      document.getElementById('prompt').classList.remove('scale-105');
+    }
+  })
 }
